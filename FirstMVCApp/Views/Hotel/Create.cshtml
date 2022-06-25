@@ -1,0 +1,33 @@
+﻿@model HotelBooking
+
+<div class="row">
+    <div class="col-8">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Booking Id</th>
+                            <th>Guest Name</th>
+                            <th>Date Start</th>
+                            <th>Date End</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.Id</td>
+                            <td>@Model.GuestName</td>
+                            <td>@Model.DateStart</td>
+                            <td>@Model.DateEnd</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <a class="nav-link text-dark" asp-controller="Hotel" asp-action="HotelBookingDetails">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
