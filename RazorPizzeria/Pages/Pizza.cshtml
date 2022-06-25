@@ -1,6 +1,7 @@
 ﻿@page
 @model RazorPizzeria.Pages.PizzaModel
 @{
+    ViewData["Title"] = "Pizza Home";
 }
 
 <div class="text-center">
@@ -17,7 +18,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 mb-5 mt-5">
-                <div class="w-100 row makeYourOwnDiv">
+                <div class="w-100 pb-4 row makeYourOwnDiv">
                     <div class="col-4">
                         <img src="~/images/Pizzas/Create.png" class="w-100" />
                     </div>
@@ -30,6 +31,18 @@
                     </div>
                 </div>
             </div>
+            @foreach (var pizza in Model.fakePizzaDB)
+            {
+                var imagePath = "~/images/Pizzas/" + pizza.ImageTitle + ".png";
+                <div class="col-4 mb-5">
+
+                    <img src="@imagePath" class="w-100" asp-append-version="true" />
+                    <a class="btn alert-primary mt-1" asp-area="" asp-page="Checkout/Checkout"
+                   asp-route-ImageTitle="@pizza.ImageTitle" asp-route-PizzaName="@pizza.PizzaName"
+                   asp-route-PizzaPrice="@pizza.FinalPrice">Get this Pizza</a>
+                </div>
+            }
+
         </div>
 
     </div>
