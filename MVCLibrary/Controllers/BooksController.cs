@@ -22,9 +22,9 @@ namespace MVCLibrary.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-              return _context.Book != null ? 
-                          View(await _context.Book.ToListAsync()) :
-                          Problem("Entity set 'LibraryContext.Book'  is null.");
+            return _context.Book != null ?
+                        View(await _context.Book.ToListAsync()) :
+                        Problem("Entity set 'LibraryContext.Book'  is null.");
         }
 
         // GET: Books/Details/5
@@ -48,6 +48,7 @@ namespace MVCLibrary.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
+            ViewBag.Language = new SelectList(new List<string>() { "English", "French", "Yoruba" });
             return View();
         }
 
@@ -56,7 +57,7 @@ namespace MVCLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookID,Title,CallNumber")] Book book)
+        public async Task<IActionResult> Create([Bind("BookID,Title,CallNumber, Language, Author")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +65,8 @@ namespace MVCLibrary.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Language = new SelectList(new List<string>() { "English", "French", "Yoruba" }, book.Language);
+
             return View(book);
         }
 
@@ -80,6 +83,8 @@ namespace MVCLibrary.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Language = new SelectList(new List<string>() { "English", "French", "Yoruba" }, book.Language == null ? "" : book.Language);
+
             return View(book);
         }
 
@@ -88,17 +93,21 @@ namespace MVCLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookID,Title,CallNumber")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("BookID,Title,Author, Language,CallNumber")] Book book)
         {
             if (id != book.BookID)
             {
                 return NotFound();
             }
 
+            ViewBag.Language = new SelectList(new List<string>() { "English", "French", "Yoruba" }, book.Language == null ? "" : book.Language);
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //_context.Book.Update(book);
+                    //_context.Attach(book).State = EntityState.Modified;
                     _context.Update(book);
                     await _context.SaveChangesAsync();
                 }
@@ -150,14 +159,14 @@ namespace MVCLibrary.Controllers
             {
                 _context.Book.Remove(book);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookExists(int id)
         {
-          return (_context.Book?.Any(e => e.BookID == id)).GetValueOrDefault();
+            return (_context.Book?.Any(e => e.BookID == id)).GetValueOrDefault();
         }
     }
 }
