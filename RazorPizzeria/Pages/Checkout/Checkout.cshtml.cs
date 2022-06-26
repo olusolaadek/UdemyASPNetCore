@@ -32,7 +32,7 @@ namespace RazorPizzeria.Pages.Checkout
             pizzaOrder.BasePrice = PizzaPrice;
 
             _context.PizzaOrders.Add(pizzaOrder);
-            _context.SaveChanges();
+            int n = _context.SaveChanges();
         }
     }
 }
